@@ -1,0 +1,5 @@
+[versions]
+junit-junit = "4.13.1"
+
+[libraries]
+junit-junit = { module = "junit:junit", version.ref = "junit-junit" }

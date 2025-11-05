@@ -9,10 +9,10 @@ use jni::JNIEnv;
 
 use crate::wrapper::*;
 
-const RUST_EXCEPTION_CLASS: &str = "com/example/adblock/exception/RustException";
+const RUST_EXCEPTION_CLASS: &str = "eu/byquanton/adblock/exception/RustException";
 
 #[no_mangle]
-pub extern "system" fn Java_com_example_adblock_AdvtBlocker_initObject(
+pub extern "system" fn Java_eu_byquanton_adblock_AdvtBlocker_initObject(
     mut env: JNIEnv,
     _class: JObject,
     rules: JObjectArray,
@@ -28,7 +28,7 @@ pub extern "system" fn Java_com_example_adblock_AdvtBlocker_initObject(
 }
 
 #[no_mangle]
-pub extern "system" fn Java_com_example_adblock_AdvtBlocker_destroyObject(
+pub extern "system" fn Java_eu_byquanton_adblock_AdvtBlocker_destroyObject(
     mut env: JNIEnv,
     _class: JObject,
     ptr: jlong,
@@ -44,7 +44,7 @@ pub extern "system" fn Java_com_example_adblock_AdvtBlocker_destroyObject(
 }
 
 #[no_mangle]
-pub extern "system" fn Java_com_example_adblock_AdvtBlocker_checkNetworkUrls(
+pub extern "system" fn Java_eu_byquanton_adblock_AdvtBlocker_checkNetworkUrls(
     mut env: JNIEnv,
     _class: JObject,
     ptr: jlong,

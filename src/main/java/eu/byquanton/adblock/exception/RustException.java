@@ -1,4 +1,4 @@
-package com.example.adblock.exception;
+package eu.byquanton.adblock.exception;
 
 import java.lang.RuntimeException;
 

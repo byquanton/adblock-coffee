@@ -1,4 +1,4 @@
-package com.example.adblock;
+package eu.byquanton.adblock;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 
-import com.example.adblock.exception.RustException;
+import eu.byquanton.adblock.exception.RustException;
 
 public class AdvtBlockerTest {
 

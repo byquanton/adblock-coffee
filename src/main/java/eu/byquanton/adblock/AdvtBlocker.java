@@ -1,8 +1,8 @@
-package com.example.adblock;
+package eu.byquanton.adblock;
 
 import java.util.List;
 
-import com.example.adblock.exception.RustException;
+import eu.byquanton.adblock.exception.RustException;
 
 /**
  * This public wrapper class provides base functionality of adblock-rust library.
