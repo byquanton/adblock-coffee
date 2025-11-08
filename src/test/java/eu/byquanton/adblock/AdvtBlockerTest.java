@@ -7,8 +7,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+
 import org.junit.Test;
 
 import eu.byquanton.adblock.exception.RustException;
@@ -48,6 +50,15 @@ public class AdvtBlockerTest {
         );
 
         assertTrue(result);
+    }
+
+    @Test
+    public void checkUrlCosmeticResourcesTest() {
+        AdvtBlocker instance = AdvtBlocker.createInstance(List.of("youtube.com##ytd-grid-video-renderer:has(#video-title:has-text(#shorts))"));
+
+        CosmeticResources cosmeticResources = instance.getUrlCosmeticResources("https://youtube.com");
+
+        assertEquals(1, cosmeticResources.hideSelectors().size());
     }
 
     @Test

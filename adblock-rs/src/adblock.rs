@@ -1,8 +1,8 @@
+use crate::errors::Result;
+use adblock::cosmetic_filter_cache::UrlSpecificResources;
 use adblock::lists::ParseOptions;
 use adblock::request::Request;
 use adblock::{Engine, FilterSet};
-
-use crate::errors::Result;
 
 pub(crate) struct AdvtBlocker {
     engine: Engine,
@@ -30,6 +30,12 @@ impl AdvtBlocker {
         let request = Request::new(url, src_url, req_type)?;
         let blocker_result = self.engine.check_network_request(&request);
         Ok(blocker_result.matched)
+    }
+
+    pub fn url_cosmetic_resources(&self, url: &str) -> Result<UrlSpecificResources> {
+        let url_specific_resources = self.engine.url_cosmetic_resources(&url);
+
+        Ok(url_specific_resources)
     }
 }
 
@@ -85,5 +91,21 @@ mod adblock_test {
             });
 
         assert_eq!(check_result, false);
+    }
+
+    #[test]
+    fn check_url_cosmetic_resources() {
+        let rules = vec![
+            "youtube.com##ytd-grid-video-renderer:has(#video-title:has-text(#shorts))".to_string(),
+        ];
+
+        let advt_blocker = AdvtBlocker::new(rules);
+
+        let result = advt_blocker.url_cosmetic_resources("https://youtube.com").unwrap_or_else(|err| {
+            log::error!("{:?}", err.to_string());
+            UrlSpecificResources::empty()
+        });
+
+        assert_eq!(result.hide_selectors.len(), 1);
     }
 }

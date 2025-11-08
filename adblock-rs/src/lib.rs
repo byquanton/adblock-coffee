@@ -1,10 +1,12 @@
+extern crate alloc;
+
 mod adblock;
 mod errors;
 mod logger;
 mod wrapper;
 
 use jni::objects::{JObject, JObjectArray, JString};
-use jni::sys::{jboolean, jlong};
+use jni::sys::{jboolean, jlong, jobject};
 use jni::JNIEnv;
 
 use crate::wrapper::*;
@@ -58,6 +60,23 @@ pub extern "system" fn Java_eu_byquanton_adblock_AdvtBlocker_checkNetworkUrls(
             env.throw_new(RUST_EXCEPTION_CLASS, err.to_string())
                 .expect("failed to find RustException java class");
             false as jboolean
+        }
+    }
+}
+
+#[no_mangle]
+pub extern "system" fn Java_eu_byquanton_adblock_AdvtBlocker_getUrlCosmeticResourcesNative(
+    mut env: JNIEnv,
+    _class: JObject,
+    ptr: jlong,
+    url: JString,
+) -> jobject {
+    match url_cosmetic_resources_wrapped(&mut env, &_class, ptr, &url) {
+        Ok(obj) => obj,
+        Err(err) => {
+            env.throw_new(RUST_EXCEPTION_CLASS, err.to_string())
+                .expect("failed to find RustException java class");
+            std::ptr::null_mut()
         }
     }
 }

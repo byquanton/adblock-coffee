@@ -40,7 +40,7 @@ public class AdvtBlocker {
      * There is simple fabric method to create current class instance with initialized
      * external AdvtBlocker object.
      *
-     * @param rules          A list of rules to further URL validation.
+     * @param rules A list of rules to further URL validation.
      * @return AdvtBlocker   A current class {@link AdvtBlocker} instance.
      * @throws RustException runtime exception from external library.
      */
@@ -56,7 +56,7 @@ public class AdvtBlocker {
     /**
      * This method drops initialized native library object from memory.
      *
-     * @throws RustException runtime exception of destroying rust AdvtBlocker object.
+     * @throws RustException runtime exception to destroying rust AdvtBlocker object.
      */
     public void destroyInstance() throws RustException {
         if (!destroyObject(this.advtBlockerPtr)) {
@@ -67,14 +67,27 @@ public class AdvtBlocker {
     /**
      * This method validate passed URL by previously loaded rules.
      *
-     * @param url            An URL address to validate.
-     * @param sourceUrl      A source URL to extract domain.
-     * @param requestType    A request type to validate.
+     * @param url         A URL address to validate.
+     * @param sourceUrl   A source URL to extract domain.
+     * @param requestType A request type to validate.
      * @return boolean       A result to validation
      * @throws RustException runtime exception from external library.
      */
     public boolean checkUrls(String url, String sourceUrl, String requestType) throws RustException {
         return checkNetworkUrls(this.advtBlockerPtr, url, sourceUrl, requestType);
+    }
+
+    /**
+     * Get all cosmetic resources needed for a URL when
+     * a page starts loading. This returns hide selectors, injected scripts, and exceptions
+     * that should be applied.
+     *
+     * @param url The URL of the page that is about to load
+     * @return CosmeticResources Container with all cosmetic filtering data for the page
+     * @throws RustException If the native call fails
+     */
+    public CosmeticResources getUrlCosmeticResources(String url) throws RustException {
+        return getUrlCosmeticResourcesNative(this.advtBlockerPtr, url);
     }
 
     /**
@@ -91,7 +104,7 @@ public class AdvtBlocker {
      * initialize external library AdvtBlocker structure with passed rules list and returns pointer
      * to initialized object.
      *
-     * @param rules          A list of rules to further URL validation.
+     * @param rules A list of rules to further URL validation.
      * @throws RustException runtime exception from external library.
      */
     public static native long initObject(List<String> rules) throws RustException;
@@ -108,12 +121,17 @@ public class AdvtBlocker {
      * There is native method which defined to get access to external library. Current method
      * invokes external library method to validate passed URL.
      *
-     * @param ptr            A pointer to external library AdvtBlocker structure to validate URL.
-     * @param url            An URL address to validate.
-     * @param sourceUrl      A source URL to extract domain.
-     * @param requestType    A request type to validate.
+     * @param ptr         A pointer to external library AdvtBlocker structure to validate URL.
+     * @param url         A URL address to validate.
+     * @param sourceUrl   A source URL to extract domain.
+     * @param requestType A request type to validate.
      * @return boolean       A result to validation
      * @throws RustException runtime exception from external library.
      */
     public native boolean checkNetworkUrls(long ptr, String url, String sourceUrl, String requestType) throws RustException;
+
+    /**
+     * Native entry for getting all cosmetic resources for a URL.
+     */
+    private native CosmeticResources getUrlCosmeticResourcesNative(long ptr, String url) throws RustException;
 }
